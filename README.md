@@ -50,6 +50,6 @@ cat dbinit.sql | cockroach sql --url "postgresql://wonkymic:<password>@free-tier
 ## API Validation
 | endpoint | verb | url | Summary |
 | :--- | :--- | :--- | :--- |
-| ping | GET | http://localhost:8080/ping | Pong |
-| user | GET | http://localhost:8080/user/<uuid> | Returns User Struct |
-| user | POST | http://localhost:8080/user/ | Returns a list of Users |
+| ping | GET | `http://localhost:8080/ping` | Pong |
+| user | GET | `http://localhost:8080/user/<uuid>` | Returns User Struct |
+| user | POST | `http://localhost:8080/user` | Returns a list of Users |
