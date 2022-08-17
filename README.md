@@ -47,7 +47,7 @@ cat dbinit.sql | cockroach sql --url "postgresql://wonkymic:<password>@free-tier
 }
 ```
 
-## API Validation
+## API
 | endpoint | verb | url | Returns | Body
 | :--- | :--- | :--- | :--- | :--- |
 | ping | GET | `http://localhost:8080/ping` | Pong |  N/A |

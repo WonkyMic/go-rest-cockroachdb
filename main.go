@@ -82,7 +82,7 @@ func setupRouter(dbpool *pgxpool.Pool) *gin.Engine {
 		var user_req domain.UserReq
 		c.BindJSON(&user_req)
 
-		// // CRDB	transaction
+		// CRDB	transaction
 		ctx := context.Background()
 		// TODO - update Isolation level (pgx.TxOptions{})
 		tx, err := dbpool.BeginTx(ctx, pgx.TxOptions{})
