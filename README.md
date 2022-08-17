@@ -35,7 +35,7 @@ postgresql://wonkymic:<password>@
 free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&options=--cluster%3Dmultipass-43
 ```
 
-### Command connection to create Account table
+### Command connection to create User table
 ```
 cat dbinit.sql | cockroach sql --url "postgresql://wonkymic:<password>@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&options=--cluster%3Dmultipass-43"
 ```

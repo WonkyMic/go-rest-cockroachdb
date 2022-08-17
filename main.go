@@ -17,11 +17,11 @@ import (
 func setupRouter(dbpool *pgxpool.Pool) *gin.Engine {
 	r := gin.Default()
 
-	// Ping test
+	// Ping Pong
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
 	})
-	// User
+	// GET :: User
 	r.GET("/user/:id", func(c *gin.Context) {
 		id := c.Params.ByName("id")
 		var user_res domain.UserRes
@@ -56,27 +56,9 @@ func setupRouter(dbpool *pgxpool.Pool) *gin.Engine {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Users Not Found"})
 		}
 	})	
-	// GET :: All Accounts
-	r.GET("/account", func(c *gin.Context) {
-		rows, err := dbpool.Query(context.Background(), "select * from public.accounts")
-		
-		if err != nil {
-			log.Println("error while executing select accounts query")
-		}
-
-		var id uuid.UUID
-		var balance int
-		for rows.Next() {
-			if err := rows.Scan(&id, &balance); err!= nil {
-				log.Fatal("error while iterating dataset")
-			}
-			log.Println("[id:", id, "balance:", balance, "]")
-		}
-	})
-
+	// CREATE :: User
 	r.POST("/user", func(c *gin.Context) {
 		q := "INSERT INTO users(id, name) VALUES($1, $2) RETURNING id, name"
-		// level := pgx.Serializable
 
 		// Map request body
 		var user_req domain.UserReq
@@ -101,7 +83,7 @@ func setupRouter(dbpool *pgxpool.Pool) *gin.Engine {
 			log.Fatal("error: ", err)
 		}
 
-		c.JSON(200, user_res)
+		c.JSON(201, user_res)
 	})
 	return r
 }
