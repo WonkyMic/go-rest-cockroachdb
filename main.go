@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"wonkymic/go-service-crdb/domain"
-	// "wonkymic/go-service-crdb/data"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -23,10 +22,10 @@ func setupRouter(dbpool *pgxpool.Pool) *gin.Engine {
 	})
 	// GET :: User
 	r.GET("/user/:id", func(c *gin.Context) {
+		q := "SELECT id, name FROM users WHERE id = $1"
 		id := c.Params.ByName("id")
 		var user_res domain.UserRes
-		err := dbpool.QueryRow(context.Background(),
-			"SELECT id, name FROM users WHERE id = $1", id).Scan(&user_res.Id, &user_res.Name);
+		err := dbpool.QueryRow(context.Background(), q, id).Scan(&user_res.Id, &user_res.Name);
 
 		if err == nil {
 			c.JSON(http.StatusOK, user_res)
@@ -36,7 +35,8 @@ func setupRouter(dbpool *pgxpool.Pool) *gin.Engine {
 	})
 	// GET :: All Users
 	r.GET("/user", func(c *gin.Context) {
-		rows, err := dbpool.Query(context.Background(), "select * from public.users")
+		q := "SELECT * FROM users"
+		rows, err := dbpool.Query(context.Background(), q)
 		
 		if err != nil {
 			log.Println("error while executing select users query")
@@ -89,25 +89,19 @@ func setupRouter(dbpool *pgxpool.Pool) *gin.Engine {
 }
 
 func main() {
-	// Create connection
+	// Set connection pool configuration 
 	database_url := os.Getenv("DATABASE_URL")
-
-	// Set connection pool configuration, with max connection pool size.
 	config, err := pgxpool.ParseConfig(database_url)
 	if err != nil {
 		log.Fatal("error configuring the database: ", err)
 	}
 
-	// Create a connecction pool to the "bank" database
+	// Create connection pool to CRDB
 	dbpool, err := pgxpool.ConnectConfig(context.Background(), config)
 	if err != nil {
 		log.Fatal("error connecting to the database: ", err)
 	}
-	defer dbpool.Close()
-
-	if err != nil {
-		log.Fatal("failed to connect database", err)
-	}
+	defer dbpool.Close() // close connection pool when main exits
 
 	r := setupRouter(dbpool)
 	r.Run(":8080")
