@@ -33,6 +33,30 @@ func setupRouter(dbpool *pgxpool.Pool) *gin.Engine {
 			c.JSON(http.StatusNotFound, gin.H{"error": "User Not Found"})
 		}
 	})
+	// Delete :: User
+	r.DELETE("/user/:id", func(c *gin.Context) {
+		q := "DELETE FROM users WHERE id = $1"
+		id := c.Params.ByName("id")
+		// CRDB	transaction
+		ctx := context.Background()
+		// TODO - update Isolation level (pgx.TxOptions{})
+		tx, err := dbpool.BeginTx(ctx, pgx.TxOptions{})
+		if err != nil {
+			log.Fatal("error: ", err)
+		}
+
+		// Map Response
+		_, err := tx.Exec(ctx, q, id)
+		if err != nil {
+			log.Fatal("error: ", err)
+		}
+		err = tx.Commit(ctx)
+		if err != nil {
+			log.Fatal("error: ", err)
+		}
+
+		c.JSON(200, gin.H{"message": "User Deleted"})
+	})
 	// GET :: All Users
 	r.GET("/user", func(c *gin.Context) {
 		q := "SELECT * FROM users"

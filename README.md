@@ -54,5 +54,6 @@ Import `test/Insomnia_<date>.json` into the Insomnia application to begin testin
 | :--- | :--- | :--- | :--- | :--- |
 | ping | GET | `http://localhost:8080/ping` | Pong |  N/A |
 | user | GET | `http://localhost:8080/user/<uuid>` | User Struct | N/A |
+| user | DEL | `http://localhost:8080/user/<uuid>` | Confirmation String | N/A |
 | user | GET | `http://localhost:8080/user` | List of Users | N/A |
 | user | POST | `http://localhost:8080/user` | New User | `{"name": "<name>"}`|
