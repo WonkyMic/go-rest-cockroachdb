@@ -48,6 +48,8 @@ cat dbinit.sql | cockroach sql --url "postgresql://wonkymic:<password>@free-tier
 ```
 
 ## API
+Import `test/Insomnia_<date>.json` into the Insomnia application to begin testing locally.
+
 | endpoint | verb | url | Returns | Body
 | :--- | :--- | :--- | :--- | :--- |
 | ping | GET | `http://localhost:8080/ping` | Pong |  N/A |
