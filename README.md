@@ -7,8 +7,8 @@ This project follows the [Quickstart with CockroachDB](https://www.cockroachlabs
 | CRDB Instance Created | Complete |
 | GoLang & CRDB interaction | Complete |
 | GoLang REST | Complete |
-| REST & CRDB combination | Incomplete |
-| CRDB Connection Pooling | Incomplete |
+| REST & CRDB combination | Complete |
+| CRDB Connection Pooling | Complete |
 | Performance Testing | Incomplete |
 | ACID (Isolation) Testing | Incomplete |
 
@@ -21,12 +21,6 @@ We are also able to run a local CRDB server. This is not covered within the proj
 curl https://binaries.cockroachdb.com/cockroach-v22.1.5.linux-amd64.tgz | tar -xz && sudo cp -i cockroach-v22.1.5.linux-amd64/cockroach /usr/local/bin/
 ```
 
-## Create DB Table using local file
-```
-cat dbinit.sql | cockroach sql --url postgresql://wonkymic:`<password>`@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&options=--cluster%3Dmultipass-43
-postgresql://wonkymic:`<password>`@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&options=--cluster%3Dmultipass-43
-```
-
 ## Connection Properties
 | | |
 | :--- | :--- |
@@ -36,13 +30,16 @@ postgresql://wonkymic:`<password>`@free-tier4.aws-us-west-2.cockroachlabs.cloud:
 | password | `<password>` |
 
 ### Application connection
-postgresql://wonkymic:`<password>`@
+```
+postgresql://wonkymic:<password>@
 free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&options=--cluster%3Dmultipass-43
+```
 
 ### Command connection to create Account table
-cat dbinit.sql | cockroach sql --url "postgresql://wonkymic:`<password>`@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&options=--cluster%3Dmultipass-43"
-
-## User Schema
+```
+cat dbinit.sql | cockroach sql --url "postgresql://wonkymic:<password>@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&options=--cluster%3Dmultipass-43"
+```
+## User Schema/Struct
 ```
 {
     Id <uuid>,
@@ -51,8 +48,8 @@ cat dbinit.sql | cockroach sql --url "postgresql://wonkymic:`<password>`@free-ti
 ```
 
 ## API Validation
-| endpoint | verb | curl | 
-| :--- | :--- | :--- |
-| ping | GET | curl http://localhost:8080/ping |
-| user | GET | curl http://localhost:8080/user/1 |
-| user | POST | curl http://localhost:8080/user/ |
+| endpoint | verb | url | Summary |
+| :--- | :--- | :--- | :--- |
+| ping | GET | http://localhost:8080/ping | Pong |
+| user | GET | http://localhost:8080/user/`<uuid>` | Returns User Struct |
+| user | POST | http://localhost:8080/user/ | Returns a list of Users |

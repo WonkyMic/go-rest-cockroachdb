@@ -1,6 +1,13 @@
 package domain
 
+import (
+	"github.com/google/uuid"
+)
+
 type UserReq struct {
-	Id		string //uuid.UUID
 	Name 	string
+}
+type UserRes struct {
+	Id		uuid.UUID
+	Name	string
 }
