@@ -46,7 +46,7 @@ func setupRouter(dbpool *pgxpool.Pool) *gin.Engine {
 		}
 
 		// Map Response
-		_, err := tx.Exec(ctx, q, id)
+		_, err = tx.Exec(ctx, q, id)
 		if err != nil {
 			log.Fatal("error: ", err)
 		}
